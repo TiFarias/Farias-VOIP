@@ -1,0 +1,207 @@
+[2026-06-15 17:16:39] VERBOSE[1790] chan_sip.c: Registered SIP '4003' at 192.168.10.113:55585
+[2026-06-15 17:16:39] NOTICE[1790] chan_sip.c: Peer '4003' is now Reachable. (21ms / 2000ms)
+[2026-06-15 17:17:43] NOTICE[1790] chan_sip.c: Peer '4003' is now UNREACHABLE!  Last qualify: 21
+[2026-06-15 17:19:03] VERBOSE[1790] chan_sip.c: Registered SIP '4004' at 192.168.10.28:50327
+[2026-06-15 17:19:27] VERBOSE[1790] chan_sip.c: Registered SIP '4009' at 192.168.11.7:12334
+[2026-06-15 17:19:27] NOTICE[1790] chan_sip.c: Peer '4009' is now Reachable. (11ms / 2000ms)
+[2026-06-15 17:19:27] VERBOSE[1790] chan_sip.c: Registered SIP '4004' at 192.168.10.113:60400
+[2026-06-15 17:19:37] NOTICE[1790] chan_sip.c: Peer '4002' is now Lagged. (2243ms / 2000ms)
+[2026-06-15 17:19:42] NOTICE[1790] chan_sip.c: Peer '4002' is now Reachable. (12ms / 2000ms)
+[2026-06-15 17:22:19] VERBOSE[1790] chan_sip.c: Registered SIP '4000' at 192.168.10.41:40454
+[2026-06-15 17:22:19] NOTICE[1790] chan_sip.c: Peer '4000' is now Reachable. (18ms / 2000ms)
+[2026-06-15 17:22:37] VERBOSE[1790] chan_sip.c: Registered SIP '4003' at 192.168.10.181:38789
+[2026-06-15 17:22:37] NOTICE[1790] chan_sip.c: Peer '4003' is now Reachable. (20ms / 2000ms)
+[2026-06-15 17:22:42] VERBOSE[1790][C-0000a4ef] netsock2.c: Using SIP RTP TOS bits 184
+[2026-06-15 17:22:42] VERBOSE[1790][C-0000a4ef] netsock2.c: Using SIP RTP TOS bits 184 in TCLASS field.
+[2026-06-15 17:22:42] VERBOSE[1790][C-0000a4ef] netsock2.c: Using SIP RTP CoS mark 5
+[2026-06-15 17:22:42] VERBOSE[21549][C-0000a4ef] pbx.c: Executing [4003@default:1] NoOp("SIP/4000-0000042b", "LIGACAO DE 4000 PARA 4003 NO CANAL SIP/4000-0000042b") in new stack
+[2026-06-15 17:22:42] VERBOSE[21549][C-0000a4ef] pbx.c: Executing [4003@default:2] Set("SIP/4000-0000042b", "CHANNEL(language)=pt_BR") in new stack
+[2026-06-15 17:22:42] VERBOSE[21549][C-0000a4ef] pbx.c: Executing [4003@default:3] Set("SIP/4000-0000042b", "DSTORIGINAL=4003") in new stack
+[2026-06-15 17:22:42] VERBOSE[21549][C-0000a4ef] pbx.c: Executing [4003@default:4] Set("SIP/4000-0000042b", "AGISIGHUP=no") in new stack
+[2026-06-15 17:22:42] VERBOSE[21549][C-0000a4ef] pbx.c: Executing [4003@default:5] UserEvent("SIP/4000-0000042b", "SnepDial, Caller:4000,Dest:4003") in new stack
+[2026-06-15 17:22:42] VERBOSE[21549][C-0000a4ef] pbx.c: Executing [4003@default:6] GotoIf("SIP/4000-0000042b", "1?snep") in new stack
+[2026-06-15 17:22:42] VERBOSE[21549][C-0000a4ef] pbx_builtins.c: Goto (default,4003,10)
+[2026-06-15 17:22:42] VERBOSE[21549][C-0000a4ef] pbx.c: Executing [4003@default:10] AGI("SIP/4000-0000042b", "snep/snep.php") in new stack
+[2026-06-15 17:22:42] VERBOSE[21549][C-0000a4ef] res_agi.c: Launched AGI Script /var/lib/asterisk/agi-bin/snep/snep.php
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Identified source: 4000 (Snep_Exten)
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Connection attempt from 4000 (SIP/4000-0000042b) to 4003
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Rule Date is Valid
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Running the rule 14:LIGAÇÕES INTERNAS SNEP
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Recording with 'mixmonitor'
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] res_agi.c: AGI Script Executing Application: (mixmonitor) Options: (/arquivos/2026-06-15/1781554963_20260615_1722_4000_4003.wav,b)
+[2026-06-15 17:22:43] VERBOSE[21553][C-0000a4ef] app_mixmonitor.c: Begin MixMonitor Recording SIP/4000-0000042b
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Definindo centro de custos para 9.
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Discando para ramal 4003 no canal SIP/4003.
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] res_agi.c: AGI Script Executing Application: (Dial) Options: (SIP/4003,60,twk)
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] netsock2.c: Using SIP RTP TOS bits 184
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] netsock2.c: Using SIP RTP TOS bits 184 in TCLASS field.
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] netsock2.c: Using SIP RTP CoS mark 5
+[2026-06-15 17:22:43] VERBOSE[21549][C-0000a4ef] app_dial.c: Called SIP/4003
+[2026-06-15 17:22:44] VERBOSE[21549][C-0000a4ef] app_dial.c: SIP/4003-0000042c is ringing
+[2026-06-15 17:22:44] VERBOSE[21549][C-0000a4ef] app_dial.c: SIP/4003-0000042c is ringing
+[2026-06-15 17:22:46] VERBOSE[21549][C-0000a4ef] app_dial.c: SIP/4003-0000042c answered SIP/4000-0000042b
+[2026-06-15 17:22:46] VERBOSE[21554][C-0000a4ef] bridge_channel.c: Channel SIP/4003-0000042c joined 'simple_bridge' basic-bridge <b791f6bd-a1ed-44a1-a5c5-88fd85db1b38>
+[2026-06-15 17:22:46] VERBOSE[21549][C-0000a4ef] bridge_channel.c: Channel SIP/4000-0000042b joined 'simple_bridge' basic-bridge <b791f6bd-a1ed-44a1-a5c5-88fd85db1b38>
+[2026-06-15 17:23:05] VERBOSE[1790] chan_sip.c: Registered SIP '4009' at 192.168.11.7:12334
+[2026-06-15 17:23:05] NOTICE[1790] chan_sip.c: Peer '4009' is now Reachable. (9ms / 2000ms)
+[2026-06-15 17:23:18] VERBOSE[21554][C-0000a4ef] bridge_channel.c: Channel SIP/4003-0000042c left 'simple_bridge' basic-bridge <b791f6bd-a1ed-44a1-a5c5-88fd85db1b38>
+[2026-06-15 17:23:18] VERBOSE[21549][C-0000a4ef] bridge_channel.c: Channel SIP/4000-0000042b left 'simple_bridge' basic-bridge <b791f6bd-a1ed-44a1-a5c5-88fd85db1b38>
+[2026-06-15 17:23:18] VERBOSE[21549][C-0000a4ef] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Stopping rule execution by action request: 1-DiscarRamal
+[2026-06-15 17:23:18] VERBOSE[21549][C-0000a4ef] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):End of running the rule 14:LIGAÇÕES INTERNAS SNEP  -> billsec: 32 -> duration: 35
+[2026-06-15 17:23:18] VERBOSE[21549][C-0000a4ef] res_agi.c: <SIP/4000-0000042b>AGI Script snep/snep.php completed, returning 0
+[2026-06-15 17:23:18] VERBOSE[21549][C-0000a4ef] pbx.c: Executing [4003@default:11] Hangup("SIP/4000-0000042b", "") in new stack
+[2026-06-15 17:23:18] VERBOSE[21549][C-0000a4ef] pbx.c: Spawn extension (default, 4003, 11) exited non-zero on 'SIP/4000-0000042b'
+[2026-06-15 17:23:18] VERBOSE[21549][C-0000a4ef] pbx.c: Executing [h@default:1] Hangup("SIP/4000-0000042b", "") in new stack
+[2026-06-15 17:23:18] VERBOSE[21549][C-0000a4ef] pbx.c: Spawn extension (default, h, 1) exited non-zero on 'SIP/4000-0000042b'
+[2026-06-15 17:23:18] VERBOSE[21553][C-0000a4ef] app_mixmonitor.c: MixMonitor close filestream (mixed)
+[2026-06-15 17:23:18] VERBOSE[21553][C-0000a4ef] app_mixmonitor.c: End MixMonitor Recording SIP/4000-0000042b
+[2026-06-15 17:23:30] VERBOSE[1790][C-0000a4f0] netsock2.c: Using SIP RTP TOS bits 184
+[2026-06-15 17:23:30] VERBOSE[1790][C-0000a4f0] netsock2.c: Using SIP RTP TOS bits 184 in TCLASS field.
+[2026-06-15 17:23:30] VERBOSE[1790][C-0000a4f0] netsock2.c: Using SIP RTP CoS mark 5
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] pbx.c: Executing [4000@default:1] NoOp("SIP/4003-0000042d", "LIGACAO DE 4003 PARA 4000 NO CANAL SIP/4003-0000042d") in new stack
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] pbx.c: Executing [4000@default:2] Set("SIP/4003-0000042d", "CHANNEL(language)=pt_BR") in new stack
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] pbx.c: Executing [4000@default:3] Set("SIP/4003-0000042d", "DSTORIGINAL=4000") in new stack
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] pbx.c: Executing [4000@default:4] Set("SIP/4003-0000042d", "AGISIGHUP=no") in new stack
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] pbx.c: Executing [4000@default:5] UserEvent("SIP/4003-0000042d", "SnepDial, Caller:4003,Dest:4000") in new stack
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] pbx.c: Executing [4000@default:6] GotoIf("SIP/4003-0000042d", "1?snep") in new stack
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] pbx_builtins.c: Goto (default,4000,10)
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] pbx.c: Executing [4000@default:10] AGI("SIP/4003-0000042d", "snep/snep.php") in new stack
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: Launched AGI Script /var/lib/asterisk/agi-bin/snep/snep.php
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: snep/snep.php: 4003 -> 4000 INFO (6):Identified source: 4003 (Snep_Exten)
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: snep/snep.php: 4003 -> 4000 INFO (6):Connection attempt from 4003 (SIP/4003-0000042d) to 4000
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: snep/snep.php: 4003 -> 4000 INFO (6):Rule Date is Valid
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: snep/snep.php: 4003 -> 4000 INFO (6):Running the rule 14:LIGAÇÕES INTERNAS SNEP
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: snep/snep.php: 4003 -> 4000 INFO (6):Recording with 'mixmonitor'
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: AGI Script Executing Application: (mixmonitor) Options: (/arquivos/2026-06-15/1781555010_20260615_1723_4003_4000.wav,b)
+[2026-06-15 17:23:30] VERBOSE[21583][C-0000a4f0] app_mixmonitor.c: Begin MixMonitor Recording SIP/4003-0000042d
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: snep/snep.php: 4003 -> 4000 INFO (6):Definindo centro de custos para 9.
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: snep/snep.php: 4003 -> 4000 INFO (6):Discando para ramal 4000 no canal SIP/4000.
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] res_agi.c: AGI Script Executing Application: (Dial) Options: (SIP/4000,60,twk)
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] netsock2.c: Using SIP RTP TOS bits 184
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] netsock2.c: Using SIP RTP TOS bits 184 in TCLASS field.
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] netsock2.c: Using SIP RTP CoS mark 5
+[2026-06-15 17:23:30] VERBOSE[21580][C-0000a4f0] app_dial.c: Called SIP/4000
+[2026-06-15 17:23:31] VERBOSE[21580][C-0000a4f0] app_dial.c: SIP/4000-0000042e is ringing
+[2026-06-15 17:23:31] VERBOSE[21580][C-0000a4f0] app_dial.c: SIP/4000-0000042e is ringing
+[2026-06-15 17:23:33] VERBOSE[21580][C-0000a4f0] app_dial.c: SIP/4000-0000042e answered SIP/4003-0000042d
+[2026-06-15 17:23:33] VERBOSE[21584][C-0000a4f0] bridge_channel.c: Channel SIP/4000-0000042e joined 'simple_bridge' basic-bridge <99f78e01-a490-4714-8d61-7c76a6fecef0>
+[2026-06-15 17:23:33] VERBOSE[21580][C-0000a4f0] bridge_channel.c: Channel SIP/4003-0000042d joined 'simple_bridge' basic-bridge <99f78e01-a490-4714-8d61-7c76a6fecef0>
+[2026-06-15 17:23:45] NOTICE[1790][C-0000a4f1] chan_sip.c: Failed to authenticate device <sip:1000@10.0.10.16:58821>;tag=7889b8905e61
+[2026-06-15 17:23:58] VERBOSE[1790] chan_sip.c: Registered SIP '4004' at 192.168.10.28:50327
+[2026-06-15 17:24:05] VERBOSE[21584][C-0000a4f0] bridge_channel.c: Channel SIP/4000-0000042e left 'simple_bridge' basic-bridge <99f78e01-a490-4714-8d61-7c76a6fecef0>
+[2026-06-15 17:24:05] VERBOSE[21580][C-0000a4f0] bridge_channel.c: Channel SIP/4003-0000042d left 'simple_bridge' basic-bridge <99f78e01-a490-4714-8d61-7c76a6fecef0>
+[2026-06-15 17:24:05] VERBOSE[21580][C-0000a4f0] res_agi.c: snep/snep.php: 4003 -> 4000 INFO (6):Stopping rule execution by action request: 1-DiscarRamal
+[2026-06-15 17:24:05] VERBOSE[21580][C-0000a4f0] res_agi.c: snep/snep.php: 4003 -> 4000 INFO (6):End of running the rule 14:LIGAÇÕES INTERNAS SNEP  -> billsec: 32 -> duration: 35
+[2026-06-15 17:24:05] VERBOSE[21580][C-0000a4f0] res_agi.c: <SIP/4003-0000042d>AGI Script snep/snep.php completed, returning 0
+[2026-06-15 17:24:05] VERBOSE[21580][C-0000a4f0] pbx.c: Executing [4000@default:11] Hangup("SIP/4003-0000042d", "") in new stack
+[2026-06-15 17:24:05] VERBOSE[21580][C-0000a4f0] pbx.c: Spawn extension (default, 4000, 11) exited non-zero on 'SIP/4003-0000042d'
+[2026-06-15 17:24:05] VERBOSE[21580][C-0000a4f0] pbx.c: Executing [h@default:1] Hangup("SIP/4003-0000042d", "") in new stack
+[2026-06-15 17:24:05] VERBOSE[21580][C-0000a4f0] pbx.c: Spawn extension (default, h, 1) exited non-zero on 'SIP/4003-0000042d'
+[2026-06-15 17:24:05] VERBOSE[21583][C-0000a4f0] app_mixmonitor.c: MixMonitor close filestream (mixed)
+[2026-06-15 17:24:05] VERBOSE[21583][C-0000a4f0] app_mixmonitor.c: End MixMonitor Recording SIP/4003-0000042d
+[2026-06-15 17:24:16] VERBOSE[1790] chan_sip.c: Unregistered SIP '4000'
+[2026-06-15 17:24:16] VERBOSE[1790] chan_sip.c: Registered SIP '4000' at 192.168.10.41:40454
+[2026-06-15 17:24:17] WARNING[1790] chan_sip.c: Retransmission timeout reached on transmission a78c8e04b97b4b9296f204fd318e398d@10.0.10.16 for seqno 941513 (Critical Response) -- See https://wiki.asterisk.org/wiki/display/AST/SIP+Retransmissions
+Packet timed out after 31999ms with no response
+[2026-06-15 17:24:20] VERBOSE[1790][C-0000a4f2] netsock2.c: Using SIP RTP TOS bits 184
+[2026-06-15 17:24:20] VERBOSE[1790][C-0000a4f2] netsock2.c: Using SIP RTP TOS bits 184 in TCLASS field.
+[2026-06-15 17:24:20] VERBOSE[1790][C-0000a4f2] netsock2.c: Using SIP RTP CoS mark 5
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] pbx.c: Executing [4003@default:1] NoOp("SIP/4000-0000042f", "LIGACAO DE 4000 PARA 4003 NO CANAL SIP/4000-0000042f") in new stack
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] pbx.c: Executing [4003@default:2] Set("SIP/4000-0000042f", "CHANNEL(language)=pt_BR") in new stack
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] pbx.c: Executing [4003@default:3] Set("SIP/4000-0000042f", "DSTORIGINAL=4003") in new stack
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] pbx.c: Executing [4003@default:4] Set("SIP/4000-0000042f", "AGISIGHUP=no") in new stack
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] pbx.c: Executing [4003@default:5] UserEvent("SIP/4000-0000042f", "SnepDial, Caller:4000,Dest:4003") in new stack
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] pbx.c: Executing [4003@default:6] GotoIf("SIP/4000-0000042f", "1?snep") in new stack
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] pbx_builtins.c: Goto (default,4003,10)
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] pbx.c: Executing [4003@default:10] AGI("SIP/4000-0000042f", "snep/snep.php") in new stack
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: Launched AGI Script /var/lib/asterisk/agi-bin/snep/snep.php
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Identified source: 4000 (Snep_Exten)
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Connection attempt from 4000 (SIP/4000-0000042f) to 4003
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Rule Date is Valid
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Running the rule 14:LIGAÇÕES INTERNAS SNEP
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Recording with 'mixmonitor'
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: AGI Script Executing Application: (mixmonitor) Options: (/arquivos/2026-06-15/1781555060_20260615_1724_4000_4003.wav,b)
+[2026-06-15 17:24:20] VERBOSE[21638][C-0000a4f2] app_mixmonitor.c: Begin MixMonitor Recording SIP/4000-0000042f
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Definindo centro de custos para 9.
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Discando para ramal 4003 no canal SIP/4003.
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] res_agi.c: AGI Script Executing Application: (Dial) Options: (SIP/4003,60,twk)
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] netsock2.c: Using SIP RTP TOS bits 184
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] netsock2.c: Using SIP RTP TOS bits 184 in TCLASS field.
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] netsock2.c: Using SIP RTP CoS mark 5
+[2026-06-15 17:24:20] VERBOSE[21633][C-0000a4f2] app_dial.c: Called SIP/4003
+[2026-06-15 17:24:21] VERBOSE[21633][C-0000a4f2] app_dial.c: SIP/4003-00000430 is ringing
+[2026-06-15 17:24:21] VERBOSE[21633][C-0000a4f2] app_dial.c: SIP/4003-00000430 answered SIP/4000-0000042f
+[2026-06-15 17:24:21] VERBOSE[21639][C-0000a4f2] bridge_channel.c: Channel SIP/4003-00000430 joined 'simple_bridge' basic-bridge <96ef3c48-6c09-482f-a1a2-cb53da7568c5>
+[2026-06-15 17:24:21] VERBOSE[21633][C-0000a4f2] bridge_channel.c: Channel SIP/4000-0000042f joined 'simple_bridge' basic-bridge <96ef3c48-6c09-482f-a1a2-cb53da7568c5>
+[2026-06-15 17:24:22] VERBOSE[1790] chan_sip.c: Registered SIP '4004' at 192.168.10.113:60400
+[2026-06-15 17:24:53] VERBOSE[21639][C-0000a4f2] bridge_channel.c: Channel SIP/4003-00000430 left 'simple_bridge' basic-bridge <96ef3c48-6c09-482f-a1a2-cb53da7568c5>
+[2026-06-15 17:24:53] VERBOSE[21633][C-0000a4f2] bridge_channel.c: Channel SIP/4000-0000042f left 'simple_bridge' basic-bridge <96ef3c48-6c09-482f-a1a2-cb53da7568c5>
+[2026-06-15 17:24:53] VERBOSE[21633][C-0000a4f2] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Stopping rule execution by action request: 1-DiscarRamal
+[2026-06-15 17:24:53] VERBOSE[21633][C-0000a4f2] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):End of running the rule 14:LIGAÇÕES INTERNAS SNEP  -> billsec: 32 -> duration: 33
+[2026-06-15 17:24:54] VERBOSE[21633][C-0000a4f2] res_agi.c: <SIP/4000-0000042f>AGI Script snep/snep.php completed, returning 0
+[2026-06-15 17:24:54] VERBOSE[21633][C-0000a4f2] pbx.c: Executing [4003@default:11] Hangup("SIP/4000-0000042f", "") in new stack
+[2026-06-15 17:24:54] VERBOSE[21633][C-0000a4f2] pbx.c: Spawn extension (default, 4003, 11) exited non-zero on 'SIP/4000-0000042f'
+[2026-06-15 17:24:54] VERBOSE[21633][C-0000a4f2] pbx.c: Executing [h@default:1] Hangup("SIP/4000-0000042f", "") in new stack
+[2026-06-15 17:24:54] VERBOSE[21633][C-0000a4f2] pbx.c: Spawn extension (default, h, 1) exited non-zero on 'SIP/4000-0000042f'
+[2026-06-15 17:24:54] VERBOSE[21638][C-0000a4f2] app_mixmonitor.c: MixMonitor close filestream (mixed)
+[2026-06-15 17:24:54] VERBOSE[21638][C-0000a4f2] app_mixmonitor.c: End MixMonitor Recording SIP/4000-0000042f
+[2026-06-15 17:27:41] NOTICE[1790] chan_sip.c: Peer '4013' is now UNREACHABLE!  Last qualify: 21
+[2026-06-15 17:28:02] NOTICE[1790] chan_sip.c: Peer '4002' is now UNREACHABLE!  Last qualify: 18
+[2026-06-15 17:28:24] VERBOSE[1790] chan_sip.c: Registered SIP '4002' at 177.173.233.88:4431
+[2026-06-15 17:28:24] NOTICE[1790] chan_sip.c: Peer '4002' is now Reachable. (49ms / 2000ms)
+[2026-06-15 17:28:25] VERBOSE[1790] chan_sip.c: Unregistered SIP '4002'
+[2026-06-15 17:28:25] VERBOSE[1790] chan_sip.c: Registered SIP '4002' at 177.173.233.88:4431
+[2026-06-15 17:28:53] VERBOSE[1790] chan_sip.c: Registered SIP '4004' at 192.168.10.28:50327
+[2026-06-15 17:29:17] VERBOSE[1790] chan_sip.c: Registered SIP '4004' at 192.168.10.113:60400
+[2026-06-15 17:29:34] VERBOSE[1790] chan_sip.c: Registered SIP '4009' at 192.168.11.7:12334
+[2026-06-15 17:29:34] NOTICE[1790] chan_sip.c: Peer '4009' is now Reachable. (13ms / 2000ms)
+[2026-06-15 17:30:18] VERBOSE[1790][C-0000a4f3] netsock2.c: Using SIP RTP TOS bits 184
+[2026-06-15 17:30:18] VERBOSE[1790][C-0000a4f3] netsock2.c: Using SIP RTP TOS bits 184 in TCLASS field.
+[2026-06-15 17:30:18] VERBOSE[1790][C-0000a4f3] netsock2.c: Using SIP RTP CoS mark 5
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] pbx.c: Executing [4003@default:1] NoOp("SIP/4000-00000431", "LIGACAO DE 4000 PARA 4003 NO CANAL SIP/4000-00000431") in new stack
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] pbx.c: Executing [4003@default:2] Set("SIP/4000-00000431", "CHANNEL(language)=pt_BR") in new stack
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] pbx.c: Executing [4003@default:3] Set("SIP/4000-00000431", "DSTORIGINAL=4003") in new stack
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] pbx.c: Executing [4003@default:4] Set("SIP/4000-00000431", "AGISIGHUP=no") in new stack
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] pbx.c: Executing [4003@default:5] UserEvent("SIP/4000-00000431", "SnepDial, Caller:4000,Dest:4003") in new stack
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] pbx.c: Executing [4003@default:6] GotoIf("SIP/4000-00000431", "1?snep") in new stack
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] pbx_builtins.c: Goto (default,4003,10)
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] pbx.c: Executing [4003@default:10] AGI("SIP/4000-00000431", "snep/snep.php") in new stack
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: Launched AGI Script /var/lib/asterisk/agi-bin/snep/snep.php
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Identified source: 4000 (Snep_Exten)
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Connection attempt from 4000 (SIP/4000-00000431) to 4003
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Rule Date is Valid
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Running the rule 14:LIGAÇÕES INTERNAS SNEP
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Recording with 'mixmonitor'
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: AGI Script Executing Application: (mixmonitor) Options: (/arquivos/2026-06-15/1781555418_20260615_1730_4000_4003.wav,b)
+[2026-06-15 17:30:18] VERBOSE[21802][C-0000a4f3] app_mixmonitor.c: Begin MixMonitor Recording SIP/4000-00000431
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Definindo centro de custos para 9.
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Discando para ramal 4003 no canal SIP/4003.
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] res_agi.c: AGI Script Executing Application: (Dial) Options: (SIP/4003,60,twk)
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] netsock2.c: Using SIP RTP TOS bits 184
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] netsock2.c: Using SIP RTP TOS bits 184 in TCLASS field.
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] netsock2.c: Using SIP RTP CoS mark 5
+[2026-06-15 17:30:18] VERBOSE[21799][C-0000a4f3] app_dial.c: Called SIP/4003
+[2026-06-15 17:30:19] VERBOSE[21799][C-0000a4f3] app_dial.c: SIP/4003-00000432 is ringing
+[2026-06-15 17:30:19] VERBOSE[21799][C-0000a4f3] app_dial.c: SIP/4003-00000432 is ringing
+[2026-06-15 17:30:20] VERBOSE[21799][C-0000a4f3] app_dial.c: SIP/4003-00000432 answered SIP/4000-00000431
+[2026-06-15 17:30:20] VERBOSE[21803][C-0000a4f3] bridge_channel.c: Channel SIP/4003-00000432 joined 'simple_bridge' basic-bridge <2848e2e0-4f52-491b-b3cb-04daddceeae5>
+[2026-06-15 17:30:20] VERBOSE[21799][C-0000a4f3] bridge_channel.c: Channel SIP/4000-00000431 joined 'simple_bridge' basic-bridge <2848e2e0-4f52-491b-b3cb-04daddceeae5>
+[2026-06-15 17:30:52] VERBOSE[21803][C-0000a4f3] bridge_channel.c: Channel SIP/4003-00000432 left 'simple_bridge' basic-bridge <2848e2e0-4f52-491b-b3cb-04daddceeae5>
+[2026-06-15 17:30:52] VERBOSE[21799][C-0000a4f3] bridge_channel.c: Channel SIP/4000-00000431 left 'simple_bridge' basic-bridge <2848e2e0-4f52-491b-b3cb-04daddceeae5>
+[2026-06-15 17:30:52] VERBOSE[21799][C-0000a4f3] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):Stopping rule execution by action request: 1-DiscarRamal
+[2026-06-15 17:30:52] VERBOSE[21799][C-0000a4f3] res_agi.c: snep/snep.php: 4000 -> 4003 INFO (6):End of running the rule 14:LIGAÇÕES INTERNAS SNEP  -> billsec: 32 -> duration: 33
+[2026-06-15 17:30:52] VERBOSE[21799][C-0000a4f3] res_agi.c: <SIP/4000-00000431>AGI Script snep/snep.php completed, returning 0
+[2026-06-15 17:30:52] VERBOSE[21799][C-0000a4f3] pbx.c: Executing [4003@default:11] Hangup("SIP/4000-00000431", "") in new stack
+[2026-06-15 17:30:52] VERBOSE[21799][C-0000a4f3] pbx.c: Spawn extension (default, 4003, 11) exited non-zero on 'SIP/4000-00000431'
+[2026-06-15 17:30:52] VERBOSE[21799][C-0000a4f3] pbx.c: Executing [h@default:1] Hangup("SIP/4000-00000431", "") in new stack
+[2026-06-15 17:30:52] VERBOSE[21799][C-0000a4f3] pbx.c: Spawn extension (default, h, 1) exited non-zero on 'SIP/4000-00000431'
+[2026-06-15 17:30:52] VERBOSE[21802][C-0000a4f3] app_mixmonitor.c: MixMonitor close filestream (mixed)
+[2026-06-15 17:30:52] VERBOSE[21802][C-0000a4f3] app_mixmonitor.c: End MixMonitor Recording SIP/4000-00000431
+[2026-06-15 17:32:17] NOTICE[1790] chan_sip.c: Peer '4009' is now UNREACHABLE!  Last qualify: 12
+[2026-06-15 17:33:48] VERBOSE[1790] chan_sip.c: Registered SIP '4004' at 192.168.10.28:50327
+[2026-06-15 17:34:12] VERBOSE[1790] chan_sip.c: Registered SIP '4004' at 192.168.10.113:60400
+[2026-06-15 17:36:47] NOTICE[1790] chan_sip.c: Peer '4002' is now Lagged. (2158ms / 2000ms)
+[2026-06-15 17:36:48] NOTICE[1790] chan_sip.c: Peer '4002' is now Reachable. (74ms / 2000ms)
+[2026-06-15 17:37:58] NOTICE[1790][C-0000a4f4] chan_sip.c: Failed to authenticate device <sip:1000@10.0.10.16:58821>;tag=15a4a5445ba5
+[2026-06-15 17:38:30] WARNING[1790] chan_sip.c: Retransmission timeout reached on transmission da13762e242a4ff28e554ddcfdc7e240@10.0.10.16 for seqno 1005050 (Critical Response) -- See https://wiki.asterisk.org/wiki/display/AST/SIP+Retransmissions
+Packet timed out after 32000ms with no response
