@@ -276,7 +276,12 @@ fun TelaContatos(viewModel: ContatoViewModel) {
             text = {
                 Column {
                     OutlinedTextField(value = nomeNovo, onValueChange = { nomeNovo = it }, label = { Text("Nome") })
-                    OutlinedTextField(value = ramalNovo, onValueChange = { ramalNovo = it }, label = { Text("Ramal") })
+                    OutlinedTextField(
+                        value = ramalNovo,
+                        onValueChange = { ramalNovo = it.filter { char -> char.isDigit() } },
+                        label = { Text("Ramal") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
                 }
             },
             confirmButton = {
@@ -373,9 +378,10 @@ fun LoginScreen() {
         // Campo de Texto para o Ramal
         OutlinedTextField(
             value = ramal,
-            onValueChange = { ramal = it },
+            onValueChange = { ramal = it.filter { char -> char.isDigit() } },
             label = { Text("Número do Ramal") },
             modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Color.Black,
                 unfocusedTextColor = Color.Black,
@@ -637,8 +643,9 @@ fun TabelaDeChamada() {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         OutlinedTextField(
                             value = numeroDestinoTransferencia,
-                            onValueChange = { numeroDestinoTransferencia = it },
+                            onValueChange = { numeroDestinoTransferencia = it.filter { char -> char.isDigit() } },
                             label = { Text("Ramal de Destino", color = Color.White) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = Color.Gray)
                         )
 
