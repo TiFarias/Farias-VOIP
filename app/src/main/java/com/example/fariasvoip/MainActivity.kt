@@ -36,10 +36,16 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.PhoneForwarded
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FileOpen
 import com.example.fariasvoip.ui.theme.FariasVOIPTheme
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 
 
 class MainActivity : ComponentActivity() {
@@ -54,6 +60,13 @@ class MainActivity : ComponentActivity() {
 
         // Inicializa o motor VOIP passando 'this' (O contexto do activity)
         SipManager.setup(this)
+
+        // Tenta login automático se houver dados salvos
+        val (ramalSalvo, senhaSalva, dominioSalvo) = PrefsManager.buscarCredenciais(this)
+        if (ramalSalvo != null && senhaSalva != null && dominioSalvo != null) {
+            SipManager.registrarRamal(ramalSalvo, senhaSalva, dominioSalvo)
+        }
+
         enableEdgeToEdge()
 
         // Solicitação de permissão de áudio em tempo de execução
@@ -122,27 +135,53 @@ fun MainHost(viewModel: ContatoViewModel) {
 
 @Composable
 fun TelaBoasVindas() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Bem-vindo ao Farias SIP",
-            style = MaterialTheme.typography.headlineSmall,
-            color = Color.Gray
-        )
-        Text(
-            text = "USUARIO AQUI", // Nome que pegamos do SNEP
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = "Selecione uma opção abaixo para começar",
-            style = MaterialTheme.typography.bodyMedium
-        )
+    val context = LocalContext.current
+    val vermelhoEmpresa = Color(0xFFD32F2F)
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Botão de Sair no canto superior direito (ainda menor e discreto)
+        IconButton(
+            onClick = {
+                PrefsManager.limparLogin(context)
+                SipManager.deslogar()
+            },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp) // Reduzi o padding para ficar mais no canto
+                .size(40.dp)   // Tamanho total do botão reduzido
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.Logout,
+                contentDescription = "Sair",
+                tint = vermelhoEmpresa,
+                modifier = Modifier.size(20.dp) // Ícone menor (20dp)
+            )
+        }
+
+        // Conteúdo Principal Centralizado
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Bem-vindo ao Farias VOIP",
+                style = MaterialTheme.typography.headlineSmall,
+                color = Color.Gray
+            )
+            Text(
+                text = "Painel de Ramal Ativo",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = vermelhoEmpresa
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "Selecione uma opção na barra inferior para começar",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.DarkGray
+            )
+        }
     }
 }
 
@@ -286,6 +325,7 @@ fun TelaContatos(viewModel: ContatoViewModel) {
 
 @Composable
 fun LoginScreen() {
+    val context = LocalContext.current
     var ramal by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     var dominio by remember { mutableStateOf("192.168.10.1:5050") }
@@ -293,18 +333,42 @@ fun LoginScreen() {
 
     val status = SipManager.statusRegistro
 
+    // Definição da paleta de cores da empresa para harmonização
+    val vermelhoEmpresa = Color(0xFFD32F2F) // Vermelho moderno e corporativo
+    val cinzaFundo = Color(0xFFF5F5F5)     // Cinza bem claro para o fundo da tela
+    val cinzaTexto = Color(0xFF616161)     // Cinza escuro para textos secundários
+
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(cinzaFundo)
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Farias SIP", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-        
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        Text(text = "Status: $status", color = if (status.contains("Erro")) Color.Red else MaterialTheme.colorScheme.secondary)
+        Image(
+            painter = painterResource(id = R.drawable.logo_empresa),
+            contentDescription = "Logo da Empresa",
+            modifier = Modifier
+                .size(140.dp)
+                .padding(bottom = 16.dp)
+        )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Text(
+            text = "Farias VOIP",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = vermelhoEmpresa // Agora o título segue a identidade visual!
+        )
+
+        Text(
+            text = "Status: $status",
+            color = if (status.contains("Erro")) vermelhoEmpresa else cinzaTexto,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Campo de Texto para o Ramal
         OutlinedTextField(
@@ -312,10 +376,16 @@ fun LoginScreen() {
             onValueChange = { ramal = it },
             label = { Text("Número do Ramal") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedBorderColor = vermelhoEmpresa,
+                focusedLabelColor = vermelhoEmpresa,
+                cursorColor = vermelhoEmpresa
+            )
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Campo de Texto para a Senha
         OutlinedTextField(
@@ -323,7 +393,16 @@ fun LoginScreen() {
             onValueChange = { senha = it },
             label = { Text("Senha do Ramal") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            // A LINHA ABAIXO TRANSFORMA OS CARACTERES EM PONTOS/ASTERISCOS AUTOMATICAMENTE
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, autoCorrect = false),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedBorderColor = vermelhoEmpresa,
+                focusedLabelColor = vermelhoEmpresa,
+                cursorColor = vermelhoEmpresa
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -349,9 +428,9 @@ fun LoginScreen() {
                     }
                 )
                 DropdownMenuItem(
-                    text = { Text("Externo (voip.hostcg.com.br)") },
+                    text = { Text("Externo (voip.hostcg.com.br:5050)") },
                     onClick = {
-                        dominio = "voip.hostcg.com.br"
+                        dominio = "voip.hostcg.com.br:5050"
                         expandirDominios = false
                     }
                 )
@@ -360,13 +439,22 @@ fun LoginScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // Botão de entrar
         Button(
             onClick = {
-                SipManager.registrarRamal(ramal, senha, dominio)
+                if (ramal.isNotEmpty() && senha.isNotEmpty() && dominio.isNotEmpty()) {
+                    PrefsManager.salvarLogin(context, ramal, senha, dominio)
+                    SipManager.registrarRamal(ramal, senha, dominio)
+                }
             },
-            modifier = Modifier.fillMaxWidth().height(50.dp)
+            modifier = Modifier.fillMaxWidth().height(54.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = vermelhoEmpresa,
+                contentColor = Color.White
+            ),
+            shape = MaterialTheme.shapes.medium
         ) {
-            Text("ENTRAR")
+            Text("ENTRAR", fontWeight = FontWeight.Bold, fontSize = 16.sp)
         }
     }
 }

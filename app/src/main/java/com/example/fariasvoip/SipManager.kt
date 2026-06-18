@@ -110,10 +110,10 @@ object SipManager {
 
                         // Reduzimos o ganho do microfone para 0.8 (ligeiramente abaixo do padrão)
                         // Isso diminui a sensibilidade do microfone do PC às caixas de som
-                        call.microphoneVolumeGain = 0.8f
+                        call.microphoneVolumeGain = 1.2f
 
                         // Mantemos o speaker em 1.0 ou 1.2
-                        call.speakerVolumeGain = 1.0f
+                        call.speakerVolumeGain = 1.2f
                     }
                     Call.State.Released -> {
                         /*println("SNEP: Chamada finalizada.")
@@ -179,6 +179,12 @@ object SipManager {
         core.addAuthInfo(authInfo)
         core.addAccount(account)
         core.defaultAccount = account
+    }
+
+    fun deslogar() {
+        core.clearAccounts()
+        core.clearAllAuthInfo()
+        statusRegistro = "Desconectado"
     }
 
     fun fazerLigacao(numero: String) {
