@@ -1,3 +1,4 @@
+// ESTES SAO DADOS DE UM LOG DE ERRO QUE O APP APRESENTAVA. JÁ FOI RESOLVIDO!!
 [2026-06-15 17:16:39] VERBOSE[1790] chan_sip.c: Registered SIP '4003' at 192.168.10.113:55585
 [2026-06-15 17:16:39] NOTICE[1790] chan_sip.c: Peer '4003' is now Reachable. (21ms / 2000ms)
 [2026-06-15 17:17:43] NOTICE[1790] chan_sip.c: Peer '4003' is now UNREACHABLE!  Last qualify: 21

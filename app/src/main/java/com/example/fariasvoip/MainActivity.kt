@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-//import com.example.fariassip.ui.theme.FariasSIPTheme
 
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
@@ -28,7 +27,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Backspace
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.CallReceived
+import androidx.compose.material.icons.filled.CallMade
+import androidx.compose.material.icons.filled.CallMissed
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import androidx.compose.material.icons.filled.CallEnd
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.ui.platform.LocalContext
@@ -38,8 +42,15 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.PhoneForwarded
+import androidx.compose.material.icons.automirrored.filled.VolumeOff
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FileOpen
+import androidx.compose.material.icons.filled.GroupAdd
+import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.MicOff
+import androidx.compose.material.icons.filled.PersonAdd
 import com.example.fariasvoip.ui.theme.FariasVOIPTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.text.KeyboardOptions
@@ -48,15 +59,45 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 
 
+import android.view.WindowManager
+import android.os.Build
+import android.provider.Settings
+import android.net.Uri
+import android.content.Intent
+
+import androidx.compose.material.icons.filled.Call
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Configurações para acordar a tela e mostrar sobre a lockscreen
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        }
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+        )
+
+        // Solicitar permissão para sobrepor outros apps (necessário para wake-up em segundo plano em alguns aparelhos)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:$packageName")
+            )
+            startActivity(intent)
+        }
+
         // 1. Inicializa o banco de dados
         val db = AppDatabase.getDatabase(this)
 
-        // cria o viewModel
-        val viewModel = ContatoViewModel(db.contatoDao())
+        // cria os viewModels
+        val contatoViewModel = ContatoViewModel(db.contatoDao())
+        val historicoViewModel = HistoricoViewModel(db.historicoDao())
 
         // Inicializa o motor VOIP passando 'this' (O contexto do activity)
         SipManager.setup(this)
@@ -69,15 +110,20 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
-        // Solicitação de permissão de áudio em tempo de execução
-        val requestPermissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (!isGranted) {
-                // Opcional: Mostrar um aviso que sem microfone não haverá áudio
-            }
+        val permissions = mutableListOf(
+            android.Manifest.permission.RECORD_AUDIO,
+            android.Manifest.permission.VIBRATE
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(android.Manifest.permission.POST_NOTIFICATIONS)
         }
-        requestPermissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO)
+
+        val requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { results ->
+            // Feedback opcional para o usuário se as permissões foram negadas
+        }
+        requestPermissionLauncher.launch(permissions.toTypedArray())
 
         setContent {
             FariasVOIPTheme {
@@ -85,9 +131,9 @@ class MainActivity : ComponentActivity() {
                     val status = SipManager.statusRegistro
 
                     // logica da navegacao
-                    if (status == "Conectado ao SNEP!") {
-                        // Se estiver logado consegue enxergar
-                        MainHost(viewModel)
+                    // Se estiver Conectado OU Conectando, mostramos a MainHost para evitar flickering
+                    if (status == "Conectado ao SNEP!" || status == "Conectando...") {
+                        MainHost(contatoViewModel, historicoViewModel)
                     } else {
                         LoginScreen()
                     }
@@ -101,7 +147,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainHost(viewModel: ContatoViewModel) {
+fun MainHost(contatoViewModel: ContatoViewModel, historicoViewModel: HistoricoViewModel) {
     // Estado que guarda qual aba do Enum 'Telas' esta ativa
     var telaAtual by remember { mutableStateOf(Telas.Dashboard) }
 
@@ -109,7 +155,7 @@ fun MainHost(viewModel: ContatoViewModel) {
         bottomBar = {
             NavigationBar {
                 // Percorremos o nosso Enum para criar os botoes dinamicamente
-                Telas.values().forEach { tela ->
+                Telas.entries.forEach { tela ->
                     NavigationBarItem(
                         icon = { Icon(imageVector = tela.icone, contentDescription = null) },
                         label = {Text(tela.titulo) },
@@ -126,10 +172,69 @@ fun MainHost(viewModel: ContatoViewModel) {
             when (telaAtual) {
                 Telas.Dashboard -> TelaBoasVindas()
                 Telas.Discador -> TelaDiscador()
-                Telas.Contatos -> TelaContatos(viewModel)
+                Telas.Historico -> TelaHistorico(historicoViewModel)
+                Telas.Contatos -> TelaContatos(contatoViewModel)
             }
         }
 
+    }
+}
+
+@Composable
+fun TelaHistorico(viewModel: HistoricoViewModel) {
+    val historico by viewModel.todasChamadas.collectAsState(initial = emptyList())
+    val sdf = SimpleDateFormat("dd/MM HH:mm", Locale.getDefault())
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Histórico", style = MaterialTheme.typography.headlineMedium)
+            IconButton(onClick = { viewModel.limparHistorico() }) {
+                Icon(Icons.Default.Delete, contentDescription = "Limpar", tint = Color.Gray)
+            }
+        }
+
+        if (historico.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Nenhuma chamada registrada", color = Color.Gray)
+            }
+        } else {
+            LazyColumn {
+                items(historico) { chamada ->
+                    val icone = when (chamada.tipo) {
+                        TipoChamada.ENTRADA -> Icons.Default.CallReceived
+                        TipoChamada.SAIDA -> Icons.Default.CallMade
+                        TipoChamada.PERDIDA -> Icons.Default.CallMissed
+                    }
+                    val corIcone = if (chamada.tipo == TipoChamada.PERDIDA) Color.Red else Color(0xFF2E7D32)
+
+                    ListItem(
+                        leadingContent = {
+                            Icon(imageVector = icone, contentDescription = null, tint = corIcone)
+                        },
+                        headlineContent = {
+                            Text(text = chamada.nome ?: chamada.ramal, fontWeight = FontWeight.Bold)
+                        },
+                        supportingContent = {
+                            val dataFormatada = sdf.format(Date(chamada.dataHora))
+                            val duracaoFormatada = if (chamada.duracao > 0) {
+                                " • ${chamada.duracao / 60}m ${chamada.duracao % 60}s"
+                            } else ""
+                            Text("$dataFormatada$duracaoFormatada")
+                        },
+                        trailingContent = {
+                            IconButton(onClick = { SipManager.fazerLigacao(chamada.ramal) }) {
+                                Icon(Icons.Default.Call, contentDescription = "Retornar", tint = Color(0xFF2E7D32))
+                            }
+                        }
+                    )
+                    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), thickness = 0.5.dp, color = Color.LightGray)
+                }
+            }
+        }
     }
 }
 
@@ -588,8 +693,9 @@ fun TabelaDeChamada() {
     if (SipManager.estaEmChamada) {
         // Variavel para controlar se estamos no meio de uma transferencia
         var emProcessoDeTransferencia by remember { mutableStateOf(false) }
-        //val emProcesso = SipManager.mostrarInterfaceTransferencia
-        var numeroDestinoTransferencia by remember { mutableStateOf("") }
+        var emProcessoDeConferencia by remember { mutableStateOf(false) }
+        
+        var numeroDestinoAcao by remember { mutableStateOf("") }
 
         // Um Box que cobre a tela com um fundo semi-transparente
         Box(
@@ -599,17 +705,31 @@ fun TabelaDeChamada() {
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "Em chamada com:",
-                    color = Color.Gray,
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Text(
-                    text = SipManager.numeroDestino,
-                    color = Color.White,
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold
-                )
+                if (SipManager.estaEmConferencia) {
+                    Icon(Icons.Default.Groups, contentDescription = null, tint = Color.Cyan, modifier = Modifier.size(48.dp))
+                    Text(
+                        text = "Conferência Ativa",
+                        color = Color.Cyan,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                    Text(
+                        text = "${SipManager.contagemParticipantes + 1} pessoas na sala",
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                } else {
+                    Text(
+                        text = "Em chamada com:",
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = SipManager.numeroDestino,
+                        color = Color.White,
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
@@ -622,56 +742,100 @@ fun TabelaDeChamada() {
                     style = MaterialTheme.typography.displayMedium
                 )
 
-                Spacer(modifier = Modifier.height(50.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
-                if (!emProcessoDeTransferencia) {
-                    // Botao inicial de transferencia
-                    Button(onClick = { emProcessoDeTransferencia = true}) {
-                        Icon(Icons.AutoMirrored.Filled.PhoneForwarded, contentDescription = null)
-                        Text("Transferir")
-                    }
-                } else {
-                    if (emProcessoDeTransferencia) {
-                        Text(
-                            text = "Chamando colega...",
-                            color = Color.Yellow,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                // BOTÕES DE ÁUDIO (Mudo e Viva-Voz)
+                Row(
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(24.dp)
+                ) {
+                    // Botão Mudo
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton(
+                            onClick = { SipManager.alternarMudo() },
+                            modifier = Modifier
+                                .size(60.dp)
+                                .background(
+                                    if (SipManager.estaMutado) Color.Red else Color.DarkGray,
+                                    CircleShape
+                                )
+                        ) {
+                            Icon(
+                                imageVector = if (SipManager.estaMutado) Icons.Default.MicOff else Icons.Default.Mic,
+                                contentDescription = "Mudo",
+                                tint = Color.White
+                            )
+                        }
+                        Text("Mudo", color = Color.White, style = MaterialTheme.typography.labelSmall)
                     }
 
+                    // Botão Viva-Voz
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton(
+                            onClick = { SipManager.alternarVivaVoz() },
+                            modifier = Modifier
+                                .size(60.dp)
+                                .background(
+                                    if (SipManager.estaNoVivaVoz) Color.Cyan else Color.DarkGray,
+                                    CircleShape
+                                )
+                        ) {
+                            Icon(
+                                imageVector = if (SipManager.estaNoVivaVoz) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,
+                                contentDescription = "Viva-Voz",
+                                tint = if (SipManager.estaNoVivaVoz) Color.Black else Color.White
+                            )
+                        }
+                        Text("Viva-voz", color = Color.White, style = MaterialTheme.typography.labelSmall)
+                    }
+                }
+
+                if (!emProcessoDeTransferencia && !emProcessoDeConferencia) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        // Botao inicial de transferencia
+                        Button(onClick = { emProcessoDeTransferencia = true }) {
+                            Icon(Icons.AutoMirrored.Filled.PhoneForwarded, contentDescription = null)
+                            Spacer(Modifier.width(4.dp))
+                            Text("Transferir")
+                        }
+
+                        // Botão de Conferência
+                        Button(
+                            onClick = { emProcessoDeConferencia = true },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF673AB7))
+                        ) {
+                            Icon(Icons.Default.GroupAdd, contentDescription = null)
+                            Spacer(Modifier.width(4.dp))
+                            Text("Conferência")
+                        }
+                    }
+                } else if (emProcessoDeTransferencia) {
                     // Interface de transferencia ativa
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         OutlinedTextField(
-                            value = numeroDestinoTransferencia,
-                            onValueChange = { numeroDestinoTransferencia = it.filter { char -> char.isDigit() } },
+                            value = numeroDestinoAcao,
+                            onValueChange = { numeroDestinoAcao = it.filter { char -> char.isDigit() } },
                             label = { Text("Ramal de Destino", color = Color.White) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = Color.Gray)
                         )
 
                         Row(Modifier.padding(top = 16.dp)) {
-                            // Botao ligar para colega
                             Button(onClick = {
-                                SipManager.iniciarTransferenciaAssistida(numeroDestinoTransferencia)
+                                SipManager.iniciarTransferenciaAssistida(numeroDestinoAcao)
                             }) {
                                 Text("Ligar para colega")
                             }
                         }
 
                         Row(Modifier.padding(top = 8.dp)) {
-                            // Botao concluir (Une as duas chamadas)
-                            Button(
-                                onClick = {
-                                    SipManager.concluirTransferencia()
-                                    emProcessoDeTransferencia = false
-                                },
-                            ) {
+                            Button(onClick = {
+                                SipManager.concluirTransferencia()
+                                emProcessoDeTransferencia = false
+                            }) {
                                 Text("Unir e sair")
                             }
-
                             Spacer(Modifier.width(8.dp))
-
-                            // Botao Cancelar (Volta para o cliente)
                             Button(
                                 onClick = {
                                     SipManager.cancelarTransferencia()
@@ -683,11 +847,56 @@ fun TabelaDeChamada() {
                             }
                         }
                     }
+                } else if (emProcessoDeConferencia) {
+                    // Interface para ADICIONAR na CONFERÊNCIA
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Adicionar participante (Máx 5)", color = Color.White)
+                        OutlinedTextField(
+                            value = numeroDestinoAcao,
+                            onValueChange = { numeroDestinoAcao = it.filter { char -> char.isDigit() } },
+                            label = { Text("Número do Ramal", color = Color.White) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = Color.Gray, focusedTextColor = Color.White, unfocusedTextColor = Color.White)
+                        )
+
+                        Row(Modifier.padding(top = 16.dp)) {
+                            Button(
+                                onClick = {
+                                    SipManager.adicionarParticipante(numeroDestinoAcao)
+                                    numeroDestinoAcao = ""
+                                },
+                                enabled = (SipManager.contagemParticipantes < 4)
+                            ) {
+                                Icon(Icons.Default.PersonAdd, contentDescription = null)
+                                Spacer(Modifier.width(4.dp))
+                                Text("Adicionar")
+                            }
+
+                            Spacer(Modifier.width(8.dp))
+
+                            Button(
+                                onClick = { emProcessoDeConferencia = false },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+                            ) {
+                                Text("Fechar")
+                            }
+                        }
+                    }
                 }
 
-                // Botão de encerrar ligacao
+                Spacer(modifier = Modifier.height(40.dp))
+
+                // Botão de encerrar ligacao / conferencia
                 Button(
-                    onClick = { SipManager.encerrarChamada() },
+                    onClick = {
+                        if (SipManager.estaEmConferencia) {
+                            SipManager.encerrarConferencia()
+                        } else {
+                            SipManager.encerrarChamada()
+                        }
+                        emProcessoDeTransferencia = false
+                        emProcessoDeConferencia = false
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                     modifier = Modifier.size(80.dp),
                     shape = CircleShape

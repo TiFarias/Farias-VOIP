@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Contato::class], version = 1)
+@Database(entities = [Contato::class, HistoricoChamada::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun contatoDao(): ContatoDao
+    abstract fun historicoDao(): HistoricoChamadaDao
 
     companion object {
         @Volatile
@@ -19,7 +20,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "farias_sip_database"
-                ).build()
+                )
+                .fallbackToDestructiveMigration()
+                .build()
                 INSTANCE = instance
                 instance
             }
